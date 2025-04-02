@@ -1,22 +1,58 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    TODO list
-  </h1>
+  <table class="table">
+      <tr>
+        <th>
+          <h1>TODO list</h1>
+        </th>
+        <th></th>
+        <th></th>
+        <th><a href="{% url 'task-create' %}">Add task</a></th>
+      </tr>
 
-  {% if task_list %}
-    <ul>
-      {% for task in task_list %}
-        <li>{{ task.content }}</li>
-        <li>{{ task.datetime }} {{ task.deadline }}</li>
-        <li>
-          {{ task.tags }}
-        </li>
+      {% if task_list %}
+        {% for task in task_list %}
+          <tr>
+            <td>
+              <ul>
+                <li>
+                  {{ task.content }}
+                  {% if task.is_done %}
+                    Done
+                  {% else %}
+                    Not done
+                  {% endif %}
+                </li>
+                <li>{{ task.datetime }} {{ task.deadline }}</li>
 
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no tasks</p>
-  {% endif %}
+                <li>
+                  Tags:
+                  {% for tag in task.tags.all %}
+                    {{ tag }}
+                  {% endfor %}
+                  <a href="{% url 'task-update' pk=task.id %}">Update</a>
+                  <a href="{% url 'task-delete' pk=task.id %}">Delete</a>
+
+                </li>
+
+              </ul>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+              {% if task.is_done %}
+                    <a href="{% url 'task-update' pk=task.id %}">Undo</a>
+                  {% else %}
+                    <a href="{% url 'task-update' pk=task.id %}">Complete</a>
+                  {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+
+      {% else %}
+        <p>There are no tasks</p>
+      {% endif %}
+    </table>
+
 {% endblock %}

@@ -1,5 +1,3 @@
-from asyncio import tasks
-
 from django.urls import path
 
 from .views import (
@@ -11,6 +9,8 @@ from .views import (
     TagCreateView,
     TagUpdateView,
     TagDeleteView,
+    TaskCompleteView,
+    TaskNotCompleteView,
 )
 
 
@@ -27,11 +27,18 @@ urlpatterns = [
          TaskUpdateView.as_view(),
          name="task-update"
     ),
+    path("<int:pk>/complete/",
+         TaskCompleteView.as_view(),
+         name="task-complete"
+    ),
+    path("<int:pk>/notcomplete/",
+         TaskNotCompleteView.as_view(),
+         name="task-not-complete"
+    ),
     path("<int:pk>/delete/",
          TaskDeleteView.as_view(),
          name="task-delete"
     ),
-
     path("tags/",
          TagListView.as_view(),
          name="tags"

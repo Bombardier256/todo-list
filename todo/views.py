@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -23,9 +23,30 @@ class TaskUpdateView(generic.UpdateView):
     success_url = reverse_lazy("tasks")
 
 
+class TaskCompleteView(generic.View):
+    @staticmethod
+    def get(request, pk):
+        task = Task.objects.get(pk=pk)
+        task.is_done = True
+        task.save()
+
+        return redirect(reverse_lazy("tasks"))
+
+
+class TaskNotCompleteView(generic.View):
+    @staticmethod
+    def get(request, pk):
+        task = Task.objects.get(pk=pk)
+        task.is_done = False
+        task.save()
+
+        return redirect(reverse_lazy("tasks"))
+
+
 class TaskDeleteView(generic.DeleteView):
     model = Task
     success_url = reverse_lazy("tasks")
+
 
 class TagListView(generic.ListView):
     model = Tag

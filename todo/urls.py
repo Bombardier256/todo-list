@@ -1,9 +1,22 @@
+from asyncio import tasks
+
 from django.urls import path
 
 from .views import (
-    index,
+    TaskListView,
+    TagListView,
+
 )
 
+
 urlpatterns = [
-    path("", index, name="index"),
+    path("",
+         TaskListView.as_view(),
+         name="tasks"
+    ),
+
+    path("tags/",
+         TagListView.as_view(),
+         name="tags"
+    ),
 ]

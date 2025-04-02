@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-from app.models import Tag, Task
+from todo.models import Tag, Task
 
 
 @admin.register(Tag)
